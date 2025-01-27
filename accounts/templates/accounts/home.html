@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: #1a1a2e;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        .container h1 {
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+        .container p {
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: #00adb5;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+        .btn:hover {
+            background: #008c95;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Clinical Diary App</h1>
+        <p>Hello, {{ request.user.username }}!</p>
+        <a href="{% url 'logout' %}" class="btn">Logout</a>
+    </div>
+</body>
+</html>

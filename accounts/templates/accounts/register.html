@@ -25,8 +25,55 @@
         <!-- Registration Form -->
         <form method="post">
             {% csrf_token %}
+            <div class="form-group user-type">
+                <label>User Type:</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="personal" name="user_type" value="personal" checked onchange="toggleFields()">
+                        <span class="checkmark"></span> Personal
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="company" name="user_type" value="company" onchange="toggleFields()">
+                        <span class="checkmark"></span> Company
+                    </label>
+                </div>
+            </div>
+            <div class="form-group" id="companyFields" style="display: none;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="first_name" placeholder="Enter your first name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="last_name" placeholder="Enter your last name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="contactNumber">Contact Number</label>
+                    <input type="text" id="contactNumber" name="contact_number" placeholder="Enter your contact number">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="employeeType">Employee Type</label>
+                        <select id="employeeType" name="employee_type">
+                            <option value="fullTime">Full Time</option>
+                            <option value="partTime">Part Time</option>
+                            <option value="contract">Contract</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
-                <label for="name">Name</label>
+                <label for="name">UserName</label>
                 <input type="text" id="name" name="name" placeholder="Enter your name" required>
             </div>
             <div class="form-group">
@@ -47,5 +94,25 @@
         <!-- Link to Login Page -->
         <a href="{% url 'login' %}" class="alt-link">Already have an account? Login here.</a>
     </div>
+
+    <script>
+        function toggleFields() {
+            const personalCheckbox = document.getElementById('personal');
+            const companyCheckbox = document.getElementById('company');
+            const companyFields = document.getElementById('companyFields');
+        
+            if (companyCheckbox.checked) {
+                companyFields.style.display = 'block';
+                personalCheckbox.checked = false;
+            } else {
+                companyFields.style.display = 'none';
+                personalCheckbox.checked = true;
+            }
+        
+            // Ensure the container does not overflow
+            const container = document.querySelector('.container');
+            container.style.overflowY = companyCheckbox.checked ? 'auto' : 'visible';
+        }
+    </script>
 </body>
 </html>

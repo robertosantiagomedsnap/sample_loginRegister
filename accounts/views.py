@@ -4,31 +4,46 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from .models import CustomUser
-
-
+from accounts.models import CustomUser  # Import your CustomUser model
+from django.shortcuts import render, redirect
 
 User = get_user_model()
 
 def register(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
         email = request.POST.get('email')
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
+        contact_number = request.POST.get('contact_number')
+        employee_type = request.POST.get('employee_type')
+        gender = request.POST.get('gender')
 
+        # Validate first name
+        if not first_name:
+            messages.error(request, "First name is required.")
+            return redirect('register')
+
+        # Validate passwords
         if password1 != password2:
             messages.error(request, "Passwords do not match.")
             return redirect('register')
 
-        if User.objects.filter(email=email).exists():
+        # Check for existing email
+        if CustomUser.objects.filter(email=email).exists():
             messages.error(request, "An account with this email already exists.")
             return redirect('register')
 
         try:
-            user = User.objects.create_user(
+            user = CustomUser.objects.create_user(
                 email=email,
                 password=password1,
-                first_name=name  # Assuming you want to save the name as first_name
+                first_name=first_name,
+                last_name=last_name,
+                contact_number=contact_number,
+                employee_type=employee_type,
+                gender=gender,
             )
             user.save()
             messages.success(request, "Registration successful! You can now log in.")
@@ -38,6 +53,7 @@ def register(request):
             return redirect('register')
 
     return render(request, 'accounts/register.html')
+
 
 
 def user_login(request):

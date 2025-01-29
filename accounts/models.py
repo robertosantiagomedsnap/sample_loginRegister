@@ -24,19 +24,38 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
-    first_name = models.CharField(max_length=30, blank=True)
-    last_name = models.CharField(max_length=30, blank=True)
+    first_name = models.CharField(max_length=30, blank=True, null=True)
+    last_name = models.CharField(max_length=30, blank=True, null=True)
     contact_number = models.CharField(max_length=15, blank=True, null=True)
-    employee_type = models.CharField(max_length=20, choices=[('Company', 'Company'), ('Personal', 'Personal')], blank=True)
-    gender = models.CharField(max_length=10, choices=[('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')], blank=True)
+
+    # Determine user type: Personal or Company
+    user_type = models.CharField(max_length=10, choices=[('personal', 'Personal'), ('company', 'Company')], default='personal')
+
+    # Fields for personal users
+    employee_specialty = models.CharField(max_length=50, blank=True, null=True, choices=[
+        ('general', 'General'),
+        ('aesthetic_medicine', 'Aesthetic Medicine'),
+        ('dermatologist', 'Dermatologist'),
+        ('plastic_surgery', 'Plastic Surgery'),
+        ('dermatology', 'Dermatology'),
+    ])
+    gender = models.CharField(max_length=10, choices=[('male', 'Male'), ('female', 'Female')], blank=True, null=True)
+
+    # Fields for company users
+    company_name = models.CharField(max_length=255, blank=True, null=True)
+    num_employees = models.IntegerField(blank=True, null=True)
+    vat_number = models.CharField(max_length=50, blank=True, null=True)
+    company_phone = models.CharField(max_length=15, blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
+    country = models.CharField(max_length=50, blank=True, null=True)
+
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name']
+    REQUIRED_FIELDS = []
 
     def __str__(self):
         return self.email
-
